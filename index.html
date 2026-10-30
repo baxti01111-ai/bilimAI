@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BilimAI — Bilimingni oshir. Maqsadingga yet.</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5f9;--sf:#fff;--tx:#0f1b33;--mu:#5a6785;--pr:#1d4ed8;--pr2:#1e40af;--on:#fff;--ln:#dde3ee;--soft:#e8efff;--er:#b42318;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--sf:#131c2f;--tx:#e8edf8;--mu:#9aa8c7;--pr:#5b8cff;--pr2:#7ba2ff;--on:#07101f;--ln:#25314d;--soft:#18274a;--er:#ff8a80}}
+:root[data-theme="dark"]{--bg:#0b1220;--sf:#131c2f;--tx:#e8edf8;--mu:#9aa8c7;--pr:#5b8cff;--pr2:#7ba2ff;--on:#07101f;--ln:#25314d;--soft:#18274a;--er:#ff8a80}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pr);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sf);border-bottom:1px solid var(--ln)}
+header.top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+.logo{font-weight:800;font-size:20px;text-decoration:none;color:var(--pr);letter-spacing:-.02em}
+nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--mu);font-weight:500;font-size:15px}
+nav a:hover,nav a[aria-current=page]{background:var(--soft);color:var(--pr)}
+.btn{display:inline-block;border:0;border-radius:10px;padding:12px 20px;background:var(--pr);color:var(--on);font:700 15px Manrope,system-ui,sans-serif;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--pr2)}
+.btn.alt{background:var(--soft);color:var(--pr)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hero{padding:72px 0 56px}
+.hero h1{font-size:clamp(34px,6vw,60px);line-height:1.08;letter-spacing:-.035em;margin:0 0 18px;font-weight:800;max-width:14em}
+.hero p{font-size:19px;color:var(--mu);max-width:36em;margin:0 0 28px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+section.blk{padding:44px 0}
+h2{font-size:28px;letter-spacing:-.02em;margin:0 0 20px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:22px}
+.card h3{margin:0 0 6px;font-size:19px}
+.card p{margin:0;color:var(--mu);font-size:15px}
+.tag{display:inline-block;margin-top:14px;font-size:13px;font-weight:700;color:var(--pr);background:var(--soft);border-radius:99px;padding:3px 10px}
+.tag.soon{color:var(--mu);background:var(--bg)}
+.steps{counter-reset:s;display:grid;gap:12px}
+.steps li{list-style:none;counter-increment:s;background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:16px 20px 16px 64px;position:relative}
+.steps li::before{content:counter(s);position:absolute;left:18px;top:14px;width:32px;height:32px;border-radius:50%;background:var(--pr);color:var(--on);display:grid;place-items:center;font-weight:800}
+.bar{height:10px;background:var(--bg);border-radius:9px;overflow:hidden;margin:6px 0 14px}
+.bar i{display:block;height:100%;background:var(--pr)}
+details{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:700}
+details p{margin:10px 0 0;color:var(--mu)}
+footer{border-top:1px solid var(--ln);background:var(--sf);padding:32px 0;margin-top:40px;color:var(--mu);font-size:14px}
+/* AI Ustoz */
+.app{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:20px 0;height:calc(100vh - 60px - env(safe-area-inset-top,0px));min-height:520px}
+@supports (height:100dvh){.app{height:calc(100dvh - 60px - env(safe-area-inset-top,0px))}}
+.side,.chat{background:var(--sf);border:1px solid var(--ln);border-radius:14px;display:flex;flex-direction:column;min-height:0}
+.side{padding:14px;gap:10px;overflow:auto}
+.chat{overflow:hidden}
+.chatlist{display:flex;flex-direction:column;gap:4px}
+.ci{display:flex;align-items:center;gap:4px;border-radius:8px}
+.ci button.t{flex:1;text-align:left;border:0;background:none;color:var(--tx);padding:9px 10px;border-radius:8px;cursor:pointer;font:500 14px Manrope,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ci.on{background:var(--soft)}
+.ci button.x{border:0;background:none;color:var(--mu);cursor:pointer;padding:6px 9px;border-radius:6px;font-size:16px}
+.ci button.x:hover{color:var(--er)}
+select,input[type=text],textarea{width:100%;border:1px solid var(--ln);border-radius:10px;background:var(--bg);color:var(--tx);padding:10px 12px;font:15px Manrope,sans-serif}
+label{font-size:13px;font-weight:700;color:var(--mu);display:block;margin-bottom:4px}
+.msgs{flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.m{max-width:min(680px,92%);padding:12px 16px;border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15.5px}
+.m.u{align-self:flex-end;background:var(--pr);color:var(--on);border-bottom-right-radius:4px}
+.m.a{align-self:flex-start;background:var(--bg);border:1px solid var(--ln);border-bottom-left-radius:4px}
+.m.err{border-color:var(--er);color:var(--er)}
+.empty{margin:auto;text-align:center;color:var(--mu);max-width:420px}
+.empty h3{color:var(--tx);margin:0 0 6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.chip{border:1px solid var(--ln);background:var(--sf);color:var(--tx);border-radius:99px;padding:8px 14px;font:500 14px Manrope,sans-serif;cursor:pointer}
+.chip:hover{border-color:var(--pr);color:var(--pr)}
+.comp{display:flex;gap:10px;padding:12px;border-top:1px solid var(--ln);align-items:flex-end}
+.comp textarea{resize:none;max-height:140px}
+.dots::after{content:"…";animation:b 1s steps(3) infinite}
+@keyframes b{50%{opacity:.2}}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:14px;z-index:9}
+dialog{border:1px solid var(--ln);border-radius:14px;background:var(--sf);color:var(--tx);max-width:420px;width:92%;padding:22px}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.hide{display:none!important}
+@media (max-width:760px){
+ nav a.opt{display:none}
+ .app{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:auto;min-height:calc(100vh - 60px)}
+ .side{max-height:230px}
+ .chat{min-height:70vh}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+ <a class="logo" href="#home">BilimAI</a>
+ <nav aria-label="Asosiy navigatsiya">
+  <a href="#home" id="n-home" class="opt">Bosh sahifa</a>
+  <a href="#ustoz" id="n-ustoz">AI Ustoz</a>
+  <button class="btn alt" id="profBtn" type="button">Profil</button>
+ </nav>
+</div></header>
+
+<main id="home">
+ <div class="wrap">
+  <div class="hero">
+   <h1>Bilimingni oshir. Maqsadingga yet.</h1>
+   <p>BilimAI — o‘quvchilar, abituriyentlar, talabalar va o‘qituvchilar uchun yagona ta’lim platformasi. Savol bering, mavzuni tushuning va bilimingizni tekshiring.</p>
+   <div class="row"><a class="btn" href="#ustoz">AI Ustoz bilan boshlash</a><a class="btn alt" href="#qanday">Qanday ishlaydi</a></div>
+  </div>
+
+  <section class="blk" id="xizmatlar"><h2>Uchta xizmat, bitta akkaunt</h2>
+   <div class="grid">
+    <div class="card"><h3>AI Ustoz</h3><p>Shaxsiy AI o‘qituvchi: mavzuni oddiy tilda tushuntiradi, bosqichma-bosqich yechadi, mashq va savollar beradi.</p><a class="tag" href="#ustoz" style="text-decoration:none">Ishlaydi — sinab ko‘ring</a></div>
+    <div class="card"><h3>Abituriyent Pro</h3><p>Universitetga kirish imtihonlariga tayyorlanish: fanlar bo‘yicha testlar va zaif mavzularni aniqlash.</p><span class="tag soon">Keyingi bosqich</span></div>
+    <div class="card"><h3>UstozHub</h3><p>O‘qituvchilar uchun AI yordamchi: dars rejasi, topshiriq va test tuzish vositalari.</p><span class="tag soon">Keyingi bosqich</span></div>
+   </div></section>
+
+  <section class="blk" id="qanday"><h2>Qanday ishlaydi</h2>
+   <ol class="steps" style="padding:0;margin:0">
+    <li><b>Profilni to‘ldiring.</b> Ta’lim bosqichi va sinfingizni kiriting — javoblar darajangizga moslanadi.</li>
+    <li><b>Savol bering.</b> Fan va mavzuni tanlab, savolingizni yozing.</li>
+    <li><b>Tushunib oling.</b> AI Ustoz javobni qadamlarga bo‘lib tushuntiradi va misol keltiradi.</li>
+    <li><b>Bilimni tekshiring.</b> Har javobdan keyin qisqa savol bilan o‘zingizni sinab ko‘rasiz.</li>
+   </ol></section>
+
+  <section class="blk"><h2>Imkoniyatlar</h2>
+   <div class="grid">
+    <div class="card"><h3>Bosqichma-bosqich yechim</h3><p>Matematika, fizika va kimyo masalalari tayyor javob emas, tushuntirish bilan yechiladi.</p></div>
+    <div class="card"><h3>Suhbat tarixi</h3><p>Mavzular bo‘yicha suhbatlar saqlanadi: yangisini oching, eskisini ko‘ring yoki o‘chiring.</p></div>
+    <div class="card"><h3>Barcha fanlar</h3><p>Matematika, fizika, kimyo, biologiya, tarix, geografiya, ona tili, adabiyot, ingliz tili va boshqalar.</p></div>
+   </div></section>
+
+  <section class="blk"><h2>O‘quv natijalari ko‘rinishi</h2>
+   <div class="card">
+    <p style="margin-bottom:14px"><b>Namunaviy ko‘rinish.</b> Bu haqiqiy statistika emas; natijalar paneli shunday ko‘rinadi.</p>
+    <div>Algebra</div><div class="bar"><i style="width:72%"></i></div>
+    <div>Kimyo</div><div class="bar"><i style="width:45%"></i></div>
+    <div>Ingliz tili</div><div class="bar"><i style="width:60%"></i></div>
+   </div></section>
+
+  <section class="blk"><h2>Ko‘p beriladigan savollar</h2>
+   <details><summary>AI Ustoz tayyor javob beradimi?</summary><p>U avval mavzuni tushuntirishga, so‘ng sizni o‘zingiz yechishga yo‘naltirishga harakat qiladi.</p></details>
+   <details><summary>Suhbatlarim qayerda saqlanadi?</summary><p>Hozircha faqat shu qurilmadagi brauzeringizda. Hisob orqali saqlash serverli versiyada qo‘shiladi.</p></details>
+   <details><summary>AI xato qilishi mumkinmi?</summary><p>Ha. Muhim ma’lumotlarni darslik yoki o‘qituvchi bilan tekshiring.</p></details>
+   <details><summary>AI Ustoz barcha savollarga javob beradimi?</summary><p>Bu ommaviy demo suhbat va profilni faqat shu qurilmadagi brauzerda saqlaydi. Ulangan AI xizmati bo‘lmasa, ayrim savollar uchun namunaviy javob qaytaradi; bu versiyada server, akkaunt yoki doimiy AI xizmati yo‘q.</p></details>
+  </section>
+ </div>
+</main>
+
+<main id="ustoz" class="hide">
+ <div class="wrap"><div class="app">
+  <aside class="side" aria-label="Suhbatlar">
+   <button class="btn" id="newChat" type="button">Yangi suhbat</button>
+   <div><label for="subj">Fan</label>
+    <select id="subj"><option>Matematika</option><option>Fizika</option><option>Kimyo</option><option>Biologiya</option><option>Tarix</option><option>Geografiya</option><option>Ona tili</option><option>Adabiyot</option><option>Ingliz tili</option><option>Boshqa fan</option></select></div>
+   <div><label for="lvl">Daraja</label>
+    <select id="lvl"><option>Boshlang‘ich</option><option selected>O‘rta</option><option>Yuqori</option></select></div>
+   <div class="chatlist" id="list"></div>
+  </aside>
+  <section class="chat" aria-label="AI Ustoz suhbati">
+   <div class="msgs" id="msgs" aria-live="polite"></div>
+   <div class="comp">
+    <textarea id="inp" rows="1" placeholder="Savolingizni yozing…" aria-label="Savol"></textarea>
+    <button class="btn" id="send" type="button">Yuborish</button>
+   </div>
+  </section>
+ </div></div>
+</main>
+
+<footer><div class="wrap">BilimAI · O‘zbekiston ta’lim tizimi uchun · Aloqa: ma’lumot keyinroq qo‘shiladi</div></footer>
+
+<dialog id="prof"><form method="dialog" id="pf">
+ <h3 style="margin-top:0">Shaxsiy profil</h3>
+ <p style="color:var(--mu);font-size:14px;margin-top:0">Profil faqat shu qurilmada saqlanadi. Tizimga kirish serverli versiyada qo‘shiladi.</p>
+ <label for="pn">Ism</label><input type="text" id="pn" autocomplete="given-name">
+ <div style="height:10px"></div>
+ <label for="pl">Ta’lim bosqichi</label>
+ <select id="pl"><option>Maktab o‘quvchisi</option><option>Abituriyent</option><option>Universitet talabasi</option><option>O‘qituvchi</option></select>
+ <div style="height:10px"></div>
+ <label for="pc">Sinf yoki kurs</label><input type="text" id="pc" placeholder="Masalan: 10-sinf">
+ <div class="row" style="margin-top:18px"><button class="btn" value="save" id="psave">Saqlash</button><button class="btn alt" value="cancel">Bekor qilish</button></div>
+</form></dialog>
+
+<script>
+const $=s=>document.querySelector(s);
+const K={c:"bilimai_chats",p:"bilimai_prof"};
+const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let chats=load(K.c,[]),cur=null,busy=false,sampleP=null;
+let prof=load(K.p,{n:"",l:"Maktab o‘quvchisi",c:""});
+
+function toast(t){const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2400)}
+function route(){
+ const h=location.hash==="#ustoz"?"ustoz":"home";
+ $("#home").classList.toggle("hide",h!=="home");
+ $("#ustoz").classList.toggle("hide",h!=="ustoz");
+ $("#n-ustoz").setAttribute("aria-current",h==="ustoz"?"page":"false");
+ $("#n-home").setAttribute("aria-current",h==="home"?"page":"false");
+ if(h==="ustoz"){renderAll();$("#inp").focus()}
+ else if(location.hash&&location.hash!=="#home"){const t=document.getElementById(location.hash.slice(1));if(t)t.scrollIntoView()}
+}
+addEventListener("hashchange",route);
+
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function md(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")}
+
+function renderList(){
+ const l=$("#list");l.innerHTML="";
+ if(!chats.length){l.innerHTML='<p style="color:var(--mu);font-size:14px;margin:4px">Hali suhbat yo‘q.</p>';return}
+ chats.forEach(c=>{
+  const d=document.createElement("div");d.className="ci"+(c.id===cur?" on":"");
+  const b=document.createElement("button");b.className="t";b.type="button";b.textContent=c.title;b.onclick=()=>{cur=c.id;renderAll()};
+  const x=document.createElement("button");x.className="x";x.type="button";x.textContent="×";x.setAttribute("aria-label","Suhbatni o‘chirish");
+  x.onclick=()=>{if(!confirm("Bu suhbat o‘chirilsinmi?"))return;chats=chats.filter(z=>z.id!==c.id);if(cur===c.id)cur=null;save(K.c,chats);renderAll();toast("Suhbat o‘chirildi")};
+  d.append(b,x);l.appendChild(d);
+ });
+}
+function renderMsgs(){
+ const m=$("#msgs");m.innerHTML="";
+ const c=chats.find(z=>z.id===cur);
+ if(!c||!c.msgs.length){
+  const nm=prof.n?prof.n+", ":"";
+  m.innerHTML='<div class="empty"><h3>'+esc(nm)+'nimani o‘rganamiz?</h3><p>Fan va darajani chapdan tanlang, so‘ng savol yozing. Quyidagilardan birini bosing ham bo‘ladi.</p><div class="chips"></div></div>';
+  ["Kvadrat tenglamani tushuntirib ber","Fotosintez nima?","Present Perfect qachon ishlatiladi?"].forEach(t=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=()=>ask(t);m.querySelector(".chips").appendChild(b)});
+  return;
+ }
+ c.msgs.forEach(x=>addBubble(x.role,x.text,x.err));
+ m.scrollTop=m.scrollHeight;
+}
+function addBubble(role,text,err){
+ const d=document.createElement("div");d.className="m "+(role==="user"?"u":"a")+(err?" err":"");
+ d.innerHTML=md(text);$("#msgs").appendChild(d);return d;
+}
+function renderAll(){renderList();renderMsgs()}
+
+function sys(){
+ return "Sen BilimAI platformasining AI Ustozisan. O‘zbek tilida (lotin yozuvi) javob ber. Foydalanuvchi: "+(prof.l||"o‘quvchi")+(prof.c?", "+prof.c:"")+". Fan: "+$("#subj").value+". Daraja: "+$("#lvl").value+". Qoidalar: mavzuni oddiy tilda, qisqa qadamlarga bo‘lib tushuntir; bitta aniq misol kel; masalani yechishda faqat natijani emas, har bir qadamni izohla; oxirida bilimni tekshirish uchun 1–2 ta qisqa savol ber va javobni o‘zi topishga undagan holda kut. Aniq bilmagan narsangni o‘ylab topma. Formatlashda faqat **qalin** va oddiy matn ishlat.";
+}
+function localTutorReply(text, subject, level){
+ const q=(text||"").trim();
+ const subj=(subject||"Boshqa fan");
+ const lvl=(level||"O‘rta");
+ const lower=q.toLowerCase();
+ if(!q) return "Savolingizni yozing. Masalan: ‘Kvadrat tenglamani qanday yechamiz?’";
+ if(/fotosintez|biolog|hayvon|o'simlik/i.test(lower)) return "Fotosintez — o‘simliklarning quyosh energiyasidan foydalangan holda organik modda hosil qilish jarayonidir. Bosqichlar:\n\n1) Yashil pigmentlar (xlorofill) quyosh energiyasini yutadi.\n2) Suv va karbonat angidriddan glyukoza hosil bo‘ladi.\n3) O‘simlik kislorod chiqaradi.\n\nMisol: barglar quyosh nurini yutib, suv va CO₂ dan shakarlangan modda yaratadi. Savol: fotosintez uchun nima kerak?";
+ if(/present perfect|perfect/i.test(lower)) return "Present Perfect quyidagilar uchun ishlatiladi: hozirgi vaqtga ta’sir qiladigan tajriba, hali tugallangan yoki tugamagan vaqt oralig‘i.\n\nYasash: have/has + V3.\n- I have finished my homework.\n- She has visited Tashkent.\n\nEslatma: ‘last week’, ‘yesterday’ kabi aniq vaqt ko‘rsatkichlari bilan Present Perfect ishlatilmaydi.\n\nSavol: Qo‘shni gapga ‘yet’ yoki ‘already’ ni qo‘yib ko‘ring.";
+ if(/kvadrat|tenglama|quadratic/i.test(lower)) return "Kvadrat tenglama a x² + b x + c = 0 ko‘rinishida bo‘ladi. Buni yechish uchun diskriminantdan foydalanamiz:\n\nD = b² − 4ac\n\nAgar D > 0, ikkita ildiz bo‘ladi; D = 0, bitta ildiz; D < 0, haqiqiy ildiz yo‘q.\n\nMisol: x² − 5x + 6 = 0. Bu yerda a=1, b=−5, c=6. D = 25 − 24 = 1. Ildizlar: x = (5 ± 1) / 2 => x₁ = 3, x₂ = 2.\n\nSavol: D ni qanday hisoblaymiz?";
+ if(/kimyo|molekul|reaksiya|atom/i.test(lower)) return "Kimyoda atomlar birikib molekulalar hosil qiladi. Reaksiya vaqtida atomlarning soni o‘zgarmaydi, faqat ularning joylanishi yoki bog‘lanishi o‘zgaradi.\n\nMisol: vodorod va kislorod birikib suv hosil qiladi.\n\n1) Reagentlar ma’lum bir aralashmadagi moddalar.\n2) Reaksiya natijasida yangi modda paydo bo‘ladi.\n3) Kimyoviy tenglama atomlar balansini saqlashi kerak.\n\nSavol: qaysi moddalar reaktiv, qaysi moddalar mahsulot?";
+ if(/matematika|algebra|geometri|funksiya/i.test(lower)) return "Birinchi navbatda ma’lumotni tushunish kerak: masalada nima ma’lum, nima topish kerak.\n\nMasala yechimi odatda 3 qadamdan iborat:\n1) Formulani yoki munosabatni aniqlash.\n2) Ma’lum qiymatlarni qo‘yish.\n3) Natijani tekshirish.\n\nMisol: to’g’ri chiziqning burchak koeffitsienti 2 bo‘lsa, y = 2x + 3 formulasi bo‘ladi. Bu yerda x ning qiymati o‘zgarishi bilan y ham o‘zgaradi.\n\nSavol: bu funksiyaning grafigi qanday ko‘rinadi?";
+ return subj + " mavzusini " + lvl + " darajada qulayroq tushunish uchun avval asosiy tushuncha, keyin misol, so‘ngra mashq ko‘rib chiqish kerak.\n\nMasalan: bu savolni bir qadamga bo‘lib yechamiz:\n1) Nima so‘ralyapti?\n2) Qaysi formula yoki qonun ishlatiladi?\n3) Javobni tekshirib ko‘ramiz.\n\nSizga yordam berish uchun savolni aniqroq yozing: “misolni yeching”, “tushuntirib bering” yoki “qisqa test bering” kabi.";
+}
+async function getSample(){
+ if(!sampleP){
+  sampleP=(async()=>{
+   try{
+    if(window && window.claude && typeof window.claude.use === "function") return await window.claude.use("sample");
+    return null;
+   }catch(e){return null;}
+  })();
+ }
+ return sampleP;
+}
+async function ask(text){
+ text=(text||"").trim();if(!text||busy)return;
+ busy=true;$("#send").disabled=true;
+ let c=chats.find(z=>z.id===cur);
+ if(!c){c={id:String(Date.now()),title:text.slice(0,40),msgs:[]};chats.unshift(c);cur=c.id}
+ c.msgs.push({role:"user",text});save(K.c,chats);renderAll();
+ $("#inp").value="";$("#inp").style.height="auto";
+ const bub=addBubble("assistant","");bub.classList.add("dots");$("#msgs").scrollTop=1e9;
+ const sample=await getSample();
+ if(!sample){
+  const fallback=localTutorReply(text, $("#subj").value, $("#lvl").value);
+  bub.classList.remove("dots");
+  bub.innerHTML=md(fallback);
+  c.msgs.push({role:"assistant",text:fallback});
+  save(K.c,chats);
+  busy=false;$("#send").disabled=false;renderList();
+  return;
+ }
+ const hist=c.msgs.slice(-12).map(x=>({role:x.role==="user"?"user":"assistant",content:x.text}));
+ const prompt=[{role:"user",content:sys()+"\n\n(Quyida suhbat davom etadi.)"},{role:"assistant",content:"Tushunarli, o‘quvchiga yordam beraman."},...hist];
+ try{
+  const r=await sample(prompt,{cache:false,onText:({text:t})=>{bub.classList.remove("dots");bub.innerHTML=md(t);$("#msgs").scrollTop=1e9}});
+  c.msgs.push({role:"assistant",text:r.text});save(K.c,chats);
+ }catch(e){
+  const fallback=localTutorReply(text, $("#subj").value, $("#lvl").value);
+  bub.classList.remove("dots","err");
+  bub.innerHTML=md(fallback);
+  c.msgs.push({role:"assistant",text:fallback});
+  save(K.c,chats);
+ }
+ busy=false;$("#send").disabled=false;renderList();
+}
+$("#send").onclick=()=>ask($("#inp").value);
+$("#inp").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();ask($("#inp").value)}});
+$("#inp").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,140)+"px"});
+$("#newChat").onclick=()=>{cur=null;renderAll();$("#inp").focus()};
+
+$("#profBtn").onclick=()=>{$("#pn").value=prof.n;$("#pl").value=prof.l;$("#pc").value=prof.c;$("#prof").showModal()};
+$("#pf").addEventListener("submit",e=>{if(e.submitter&&e.submitter.value==="save"){prof={n:$("#pn").value.trim(),l:$("#pl").value,c:$("#pc").value.trim()};save(K.p,prof);toast("Profil saqlandi");renderMsgs()}});
+route();
+</script>
+</body>
+</html>
